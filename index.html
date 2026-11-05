@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TestFit — Record once. Get Playwright tests that fit your framework.</title>
+<meta name="description" content="TestFit is a free Chrome extension that records your browser session and generates Playwright TypeScript tests that reuse your page objects, fixtures and coding guidelines. No AI API key needed.">
+<meta property="og:title" content="TestFit — Playwright tests that fit your framework">
+<meta property="og:description" content="Record a real browser flow. Get Playwright TypeScript that reuses your page objects and fixtures, with HTML and CSS assertions. No API key needed.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"TestFit","applicationCategory":"DeveloperApplication","operatingSystem":"Chrome","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Chrome extension that records browser sessions and generates framework-aware Playwright TypeScript tests.","author":{"@type":"Person","name":"Sagar Bobade"}}
+</script>
+<style>
+  :root{
+    --bg:#090C0D; --bg-2:#0E1213; --surface:#131819; --surface-2:#192021;
+    --border:#222B2D; --border-2:#2D383A;
+    --text:#E6EDEE; --muted:#97A5A7; --faint:#687779;
+    --accent:#2DD4BF; --accent-2:#14B8A6; --accent-ink:#04201C; --accent-soft:rgba(45,212,191,.11);
+    --pass:#34D399; --fail:#F87171; --warn:#FBBF24;
+    --radius:14px; --radius-sm:10px;
+    --shadow:0 12px 40px -14px rgba(0,0,0,.65);
+    --sans:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --grid-line:rgba(255,255,255,.035);
+  }
+  [data-theme="light"]{
+    --bg:#F9FBFB; --bg-2:#F1F5F5; --surface:#FFFFFF; --surface-2:#F4F7F7;
+    --border:#E2E8E8; --border-2:#D0D9D9;
+    --text:#0D1617; --muted:#4F5E60; --faint:#7A8889;
+    --accent:#0D9488; --accent-2:#0F766E; --accent-ink:#FFFFFF; --accent-soft:rgba(13,148,136,.09);
+    --pass:#059669; --fail:#DC2626; --warn:#B45309;
+    --shadow:0 12px 30px -14px rgba(13,22,23,.18);
+    --grid-line:rgba(13,22,23,.045);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+  a{color:inherit;text-decoration:none}
+  svg{display:block}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+  section{padding:96px 0}
+  .alt{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:8px;margin-bottom:14px}
+  .eyebrow::before{content:"";width:18px;height:1px;background:currentColor;opacity:.7}
+  h1,h2,h3{line-height:1.15;letter-spacing:-.025em}
+  h2{font-size:clamp(28px,4vw,42px);font-weight:750;margin-bottom:14px}
+  .lead{color:var(--muted);font-size:17.5px;max-width:660px}
+  .section-head{margin-bottom:48px}
+  .center{text-align:center}.center .lead{margin:0 auto}
+  .center .eyebrow{justify-content:center}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-weight:600;font-size:14.5px;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .2s;font-family:inherit;white-space:nowrap}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 6px 22px -8px var(--accent)}
+  .btn-primary:hover{background:var(--accent-2)}
+  .btn-ghost{background:transparent;border-color:var(--border-2);color:var(--text)}
+  .btn-ghost:hover{background:var(--surface-2)}
+  .btn-sm{padding:8px 13px;font-size:13.5px}
+  .btn svg{width:16px;height:16px}
+
+  /* Nav */
+  .nav{position:sticky;top:0;z-index:50;backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--border)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:750;font-size:17.5px;letter-spacing:-.02em}
+  .logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#38BDF8);display:grid;place-items:center}
+  .logo-mark svg{width:17px;height:17px}
+  .nav-links{display:flex;gap:26px;font-size:14.5px;color:var(--muted)}
+  .nav-links a:hover{color:var(--text)}
+  .nav-right{display:flex;gap:10px;align-items:center}
+  .icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-2);background:transparent;color:var(--text);display:grid;place-items:center;cursor:pointer}
+  .icon-btn:hover{background:var(--surface-2)}
+  .icon-btn svg{width:17px;height:17px}
+  .menu-btn{display:none}
+
+  /* Hero */
+  .hero{position:relative;padding:84px 0 80px;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 25%,#000 30%,transparent 75%);pointer-events:none}
+  .hero::after{content:"";position:absolute;width:680px;height:680px;left:50%;top:-300px;transform:translateX(-50%);background:radial-gradient(circle,var(--accent-soft) 0%,transparent 65%);pointer-events:none}
+  .hero-top{position:relative;z-index:1;text-align:center;max-width:860px;margin:0 auto}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border:1px solid var(--border-2);border-radius:999px;font-size:13px;color:var(--muted);background:var(--surface);margin-bottom:26px}
+  .pill b{background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:999px;font-weight:600;font-size:12px}
+  .hero h1{font-size:clamp(38px,6vw,66px);font-weight:800;margin-bottom:20px}
+  .grad{background:linear-gradient(100deg,var(--accent) 10%,#38BDF8 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero .lead{margin:0 auto 32px;font-size:18.5px}
+  .ctas{display:flex;gap:12px;flex-wrap:wrap}
+  .hero .ctas{justify-content:center}
+  .checks{margin-top:22px;font-size:13.5px;color:var(--faint);display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+  .checks span{display:inline-flex;align-items:center;gap:6px}
+  .checks svg{width:14px;height:14px;color:var(--pass)}
+
+  /* Hero product mock */
+  .mock[hidden],section[hidden]{display:none!important}
+  .mock{position:relative;z-index:1;margin:56px auto 0;max-width:1060px;display:grid;grid-template-columns:330px 1fr;border:1px solid var(--border-2);border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+  .mock-side{border-right:1px solid var(--border);background:var(--bg-2);display:flex;flex-direction:column}
+  .side-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+  .side-head .t{display:flex;align-items:center;gap:8px;font-weight:650;font-size:14px}
+  .rec{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;color:var(--fail);padding:3px 8px;border-radius:999px;background:color-mix(in srgb,var(--fail) 12%,transparent)}
+  .rec i{width:7px;height:7px;border-radius:50%;background:var(--fail);animation:pulse 1.4s infinite}
+  @keyframes pulse{50%{opacity:.25}}
+  .profile{margin:12px 16px 4px;padding:9px 12px;border:1px solid var(--border);border-radius:9px;font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;background:var(--surface)}
+  .profile b{color:var(--text);font-weight:600}
+  .profile span.ok{color:var(--pass);font-family:var(--mono);font-size:11.5px}
+  .steps-list{list-style:none;padding:10px 12px 14px;display:grid;gap:6px;flex:1}
+  .st{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border-radius:9px;border:1px solid transparent;font-size:12.8px;opacity:0;transform:translateY(4px);transition:opacity .35s,transform .35s}
+  .st.show{opacity:1;transform:none}
+  .st.cur{border-color:var(--border-2);background:var(--surface)}
+  .st .n{font-family:var(--mono);font-size:11px;color:var(--faint);width:16px;flex:none;margin-top:1px}
+  .st .d{flex:1}
+  .st .d small{display:block;font-family:var(--mono);font-size:11px;color:var(--accent);margin-top:2px}
+  .st .d small.as{color:var(--pass)}
+  .side-foot{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px}
+  .side-foot .btn{flex:1;justify-content:center;padding:8px 10px;font-size:12.5px}
+  .mock-main{display:flex;flex-direction:column;min-width:0}
+  .code-tabs{display:flex;align-items:center;border-bottom:1px solid var(--border);background:var(--bg-2);padding:0 8px}
+  .ctab{font-family:var(--mono);font-size:12px;padding:12px 12px;color:var(--faint);border-bottom:2px solid transparent}
+  .ctab.on{color:var(--text);border-bottom-color:var(--accent)}
+  .code-tabs .sp{flex:1}
+  .copy-btn{font-family:var(--mono);font-size:11.5px;background:transparent;border:1px solid var(--border-2);color:var(--muted);padding:3px 9px;border-radius:6px;cursor:pointer;margin-right:6px}
+  .copy-btn:hover{color:var(--text)}
+  pre{padding:18px 20px;font-family:var(--mono);font-size:12.8px;line-height:1.8;overflow-x:auto;color:var(--text);flex:1}
+  .k{color:#C792EA}.s{color:#A5D6A7}.f{color:#82AAFF}.c{color:var(--faint);font-style:italic}.n{color:#F78C6C}.hl{background:var(--accent-soft);border-radius:3px;box-shadow:0 0 0 2px var(--accent-soft)}
+  [data-theme="light"] .k{color:#7C3AED}[data-theme="light"] .s{color:#15803D}[data-theme="light"] .f{color:#1D4ED8}[data-theme="light"] .n{color:#C2410C}
+
+  /* Video */
+  .video{aspect-ratio:16/9;max-width:960px;margin:0 auto;border-radius:16px;border:1px solid var(--border-2);background:radial-gradient(ellipse at 30% 20%,var(--accent-soft),transparent 60%),var(--surface);display:grid;place-items:center;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  .play{width:76px;height:76px;border-radius:50%;background:var(--accent);display:grid;place-items:center;margin:0 auto 18px;box-shadow:0 0 0 12px var(--accent-soft)}
+  .play svg{width:26px;height:26px;color:var(--accent-ink);margin-left:4px}
+  .video-cap{font-family:var(--mono);font-size:13px;color:var(--muted);text-align:center;line-height:1.7}
+  .video-label{position:absolute;top:16px;left:16px;font-family:var(--mono);font-size:11.5px;color:var(--faint);border:1px solid var(--border-2);padding:3px 8px;border-radius:6px;background:var(--bg-2)}
+  .flow{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .flow span{font-family:var(--mono);font-size:12.5px;padding:6px 12px;border:1px solid var(--border-2);border-radius:999px;color:var(--muted);background:var(--surface)}
+  .flow span.a{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,transparent)}
+
+  /* Compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .cmp{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);overflow:hidden;display:flex;flex-direction:column}
+  .cmp.good{border-color:color-mix(in srgb,var(--accent) 45%,transparent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .cmp-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);background:var(--bg-2)}
+  .cmp-head h3{font-size:15px;font-weight:650}
+  .tag{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600}
+  .tag.fail{color:var(--fail);background:color-mix(in srgb,var(--fail) 12%,transparent)}
+  .tag.pass{color:var(--pass);background:color-mix(in srgb,var(--pass) 12%,transparent)}
+  .cmp pre{font-size:12.3px;padding:16px 18px}
+  .cmp ul{list-style:none;border-top:1px solid var(--border);padding:14px 18px;display:grid;gap:8px;font-size:14px;color:var(--muted)}
+  .cmp li{display:flex;gap:9px;align-items:flex-start}
+  .cmp li b{font-family:var(--mono);font-size:13px;flex:none;width:14px}
+  .cmp.bad li b{color:var(--fail)} .cmp.good li b{color:var(--pass)}
+
+  /* Features */
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .feat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:border-color .2s,transform .2s}
+  .feat:hover{border-color:var(--border-2);transform:translateY(-3px)}
+  .feat .ic{width:42px;height:42px;border-radius:11px;background:var(--accent-soft);border:1px solid var(--border-2);display:grid;place-items:center;font-size:19px;margin-bottom:16px}
+  .feat h3{font-size:17px;margin-bottom:6px}
+  .feat p{color:var(--muted);font-size:14.5px}
+  .feat.star{border-color:color-mix(in srgb,var(--accent) 45%,transparent);background:linear-gradient(180deg,var(--accent-soft),transparent 70%),var(--surface)}
+  .feat .lbl{font-family:var(--mono);font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;display:block}
+
+  /* AI */
+  .ai-grid{max-width:980px}
+  .ai-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px;text-align:left}
+  .ai-step{padding:22px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface)}
+  .ai-step{display:flex;gap:14px;align-items:flex-start}
+  .ai-step .num{width:30px;height:30px;border-radius:8px;border:1px solid var(--border-2);display:grid;place-items:center;font-family:var(--mono);font-size:12.5px;color:var(--accent);flex:none;background:var(--surface)}
+  .ai-step h4{font-size:15.5px;margin-bottom:2px}
+  .ai-step p{color:var(--muted);font-size:14.5px}
+  .models{display:grid;gap:12px}
+  .model{display:grid;grid-template-columns:120px 1fr 64px;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:14px}
+  .model b{font-weight:650}
+  .bar{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-2),var(--accent));border-radius:99px;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+  .model .sc{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right}
+  .model.best{border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+  .model.best .sc{color:var(--accent)}
+  .models-note{font-size:12.5px;color:var(--faint);font-family:var(--mono);margin-top:4px}
+  .no-key{display:inline-flex;text-align:left;gap:12px;align-items:center;margin-top:28px;padding:14px 18px;border:1px dashed color-mix(in srgb,var(--accent) 50%,transparent);border-radius:var(--radius-sm);background:var(--accent-soft);font-size:14.5px}
+  .no-key b{color:var(--accent)}
+
+  /* Who */
+  .who{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .who-card{padding:24px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface)}
+  .who-card .e{font-size:26px;margin-bottom:12px}
+  .who-card h3{font-size:16.5px;margin-bottom:6px}
+  .who-card p{font-size:14px;color:var(--muted)}
+
+  /* How */
+  .how{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+  .how-step{padding:24px;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);position:relative}
+  .how-step::before{counter-increment:s;content:"0" counter(s);font-family:var(--mono);font-size:13px;color:var(--accent);display:block;margin-bottom:14px}
+  .how-step h3{font-size:17px;margin-bottom:8px}
+  .how-step p{color:var(--muted);font-size:14.3px}
+  .how-step code{font-family:var(--mono);font-size:12.5px;background:var(--surface-2);border:1px solid var(--border);padding:1px 5px;border-radius:5px}
+
+  /* Roadmap */
+  .road{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .road-col{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:22px}
+  .road-col h3{font-size:14px;font-family:var(--mono);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .road-col h3 i{width:8px;height:8px;border-radius:50%}
+  .road-col ul{list-style:none;display:grid;gap:9px;font-size:14.3px;color:var(--muted)}
+  .road-col li{padding:9px 12px;border-radius:8px;background:var(--bg-2);border:1px solid var(--border)}
+
+  /* FAQ */
+  .faq{max-width:800px;margin:0 auto;display:grid;gap:12px}
+  details{border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);padding:0 20px}
+  summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:600;font-size:15.5px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-family:var(--mono);color:var(--faint);font-size:18px;transition:transform .2s}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{color:var(--muted);font-size:15px;padding:0 0 18px}
+
+  /* CTA */
+  .cta-box{border:1px solid var(--border-2);border-radius:20px;padding:60px 32px;text-align:center;background:radial-gradient(ellipse at 50% 0%,var(--accent-soft),transparent 65%),var(--surface)}
+  .cta-box .lead{margin:0 auto 28px}
+  .cta-box .ctas{justify-content:center}
+
+  footer{border-top:1px solid var(--border);padding:52px 0 30px;font-size:14px;color:var(--muted)}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:32px;margin-bottom:36px}
+  .foot-grid h5{font-size:13px;color:var(--text);margin-bottom:14px;font-weight:600}
+  .foot-grid ul{list-style:none;display:grid;gap:9px}
+  .foot-grid a:hover{color:var(--text)}
+  .foot-bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;border-top:1px solid var(--border);font-size:13px;color:var(--faint)}
+
+  #privacy-view{display:none;padding:72px 0 96px}
+  body.show-privacy #privacy-view{display:block}
+  body.show-privacy main{display:none}
+  .policy{max-width:760px;margin:0 auto}
+  .policy h1{font-size:40px;margin-bottom:8px}
+  .policy h2{font-size:21px;margin:34px 0 10px}
+  .policy p,.policy li{color:var(--muted);font-size:15.5px;margin-bottom:10px}
+  .policy ul{padding-left:20px}
+  .policy .back{display:inline-flex;color:var(--accent);font-weight:600;font-size:14.5px;margin-bottom:28px}
+
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+    .reveal,.st{opacity:1;transform:none}
+  }
+  @media (max-width:1000px){
+    .features,.road{grid-template-columns:1fr 1fr}
+    .who,.how{grid-template-columns:1fr 1fr}
+    .ai-grid{grid-template-columns:1fr}
+    .mock{grid-template-columns:1fr}
+    .mock-side{border-right:none;border-bottom:1px solid var(--border)}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:720px){
+    .ai-steps{grid-template-columns:1fr}
+    section{padding:72px 0}
+    .nav-links{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;gap:0;background:var(--bg);border-bottom:1px solid var(--border);padding:8px 24px 16px}
+    .nav-links a{padding:12px 0;border-bottom:1px solid var(--border)}
+    .nav.open .nav-links{display:flex}
+    .menu-btn{display:grid}
+    .nav-right .btn{display:none}
+    .features,.road,.who,.how,.compare{grid-template-columns:1fr}
+    .model{grid-template-columns:90px 1fr 54px}
+    .foot-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo" aria-label="TestFit home">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="m9.5 15 1.8 1.8 3.4-3.6"/></svg></span>
+      TestFit
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#features">Features</a>
+      <a href="#ai">No API key</a>
+      <a href="#how">How it works</a>
+      <a href="#more">More features</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-right">
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle light or dark theme"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg></button>
+      <a class="btn btn-primary btn-sm" href="https://chromewebstore.google.com/detail/gnafbfhcgcigcmeflgcgmhmbchomgmgh?utm_source=item-share-cb" target="_blank" rel="noopener">Add to Chrome — free</a>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <a href="#features" class="pill"><b>Free</b> See everything TestFit can do →</a>
+      <h1>Record once.<br>Get Playwright tests that <span class="grad">fit your framework.</span></h1>
+      <p class="lead">TestFit records your real browser session and writes Playwright TypeScript using <strong>your</strong> page objects, fixtures and coding guidelines. The output looks like a teammate wrote it, not a recorder.</p>
+      <div class="ctas">
+          <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/gnafbfhcgcigcmeflgcgmhmbchomgmgh?utm_source=item-share-cb" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5h8.5M8.9 13.8 4.6 6.4M15.1 13.8l-4.3 7.4"/></svg>Add to Chrome, it's free</a>
+        <a class="btn btn-ghost" href="#features">Explore features</a>
+      </div>
+      <div class="checks">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>No AI API key needed</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>No coding to record</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>Runs in your browser</span>
+      </div>
+    </div>
+
+    <!-- Product mock -->
+    <div class="mock reveal" hidden aria-label="TestFit side panel recording a flow and generating code">
+      <aside class="mock-side">
+        <div class="side-head"><span class="t">🧪 TestFit</span><span class="rec"><i></i>REC 00:42</span></div>
+        <div class="profile"><span>Profile: <b>shop-e2e</b></span><span class="ok">● 14 POMs loaded</span></div>
+        <ul class="steps-list" id="stepsList">
+          <li class="st"><span class="n">1</span><span class="d">Search "wireless earbuds"<small>→ homePage.search()</small></span></li>
+          <li class="st"><span class="n">2</span><span class="d">Open first result<small>→ homePage.openResult(0)</small></span></li>
+          <li class="st"><span class="n">3</span><span class="d">Assert price is visible<small class="as">✓ toBeVisible</small></span></li>
+          <li class="st"><span class="n">4</span><span class="d">Click "Add to cart"<small>→ productPage.addToCart()</small></span></li>
+          <li class="st"><span class="n">5</span><span class="d">Assert cart badge = "1"<small class="as">✓ toHaveText</small></span></li>
+          <li class="st"><span class="n">6</span><span class="d">Assert button color<small class="as">✓ toHaveCSS</small></span></li>
+        </ul>
+        <div class="side-foot"><span class="btn btn-ghost">+ Assertion</span><span class="btn btn-primary">Generate</span></div>
+      </aside>
+      <div class="mock-main">
+        <div class="code-tabs"><span class="ctab on">cart.spec.ts</span><span class="ctab">prompt.md</span><span class="sp"></span><button class="copy-btn" data-copy="heroCode">Copy</button></div>
+<pre id="heroCode"><span class="k">import</span> { test, expect } <span class="k">from</span> <span class="s">'../fixtures'</span>;          <span class="c">// ← your fixtures</span>
+
+test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
+  <span class="f">test</span>(<span class="s">'user can add a product to cart'</span>, <span class="k">async</span> ({ homePage, productPage }) => {
+    <span class="k">await</span> <span class="hl">homePage.<span class="f">search</span>(<span class="s">'wireless earbuds'</span>)</span>;      <span class="c">// ← your page object</span>
+    <span class="k">await</span> homePage.<span class="f">openResult</span>(<span class="n">0</span>);
+
+    <span class="k">await</span> <span class="f">expect</span>(productPage.price).<span class="f">toBeVisible</span>();
+    <span class="k">await</span> <span class="hl">productPage.<span class="f">addToCart</span>()</span>;
+
+    <span class="k">await</span> <span class="f">expect</span>(productPage.cartBadge).<span class="f">toHaveText</span>(<span class="s">'1'</span>);
+    <span class="k">await</span> <span class="f">expect</span>(productPage.addToCartBtn)
+      .<span class="f">toHaveCSS</span>(<span class="s">'background-color'</span>, <span class="s">'rgb(255, 159, 0)'</span>);
+  });
+});</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="alt" id="demo" hidden>
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">See it in action</div>
+      <h2>A real Flipkart flow, automated in under a minute.</h2>
+      <p class="lead">Recorded in the browser, turned into framework-ready Playwright TypeScript, then run, with HTML and CSS assertions passing.</p>
+    </div>
+    <!-- TODO: replace with <video src="testfit-demo.mp4" controls muted playsinline poster="poster.png" style="width:100%;height:100%;object-fit:cover"></video> -->
+    <div class="video reveal" role="img" aria-label="TestFit demo video placeholder">
+      <span class="video-label">demo · 0:58</span>
+      <div>
+        <div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></div>
+        <div class="video-cap">flipkart.com · search → product → add to cart<br>→ cart.spec.ts → 3 passed ✓</div>
+      </div>
+    </div>
+    <div class="flow reveal"><span>⏺ Record</span><span>+ Assert</span><span class="a">🧩 Match to your POMs</span><span>⚙ Generate</span><span>▶ Run</span></div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section id="why">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">Why TestFit</div>
+      <h2>Most recorders give you code to rewrite.<br>TestFit gives you code to commit.</h2>
+      <p class="lead">A generic recorder doesn't know your framework, so you end up refactoring every line. TestFit starts from what your team already has.</p>
+    </div>
+    <div class="compare">
+      <div class="cmp bad reveal">
+        <div class="cmp-head"><h3>Generic recorder output</h3><span class="tag fail">REWRITE</span></div>
+<pre><span class="k">await</span> page.<span class="f">goto</span>(<span class="s">'https://www.flipkart.com/'</span>);
+<span class="k">await</span> page.<span class="f">locator</span>(<span class="s">'input[name="q"]'</span>).<span class="f">click</span>();
+<span class="k">await</span> page.<span class="f">locator</span>(<span class="s">'input[name="q"]'</span>).<span class="f">fill</span>(<span class="s">'wireless earbuds'</span>);
+<span class="k">await</span> page.<span class="f">keyboard</span>.<span class="f">press</span>(<span class="s">'Enter'</span>);
+<span class="k">await</span> page.<span class="f">locator</span>(<span class="s">'div:nth-child(2) > a'</span>).<span class="f">first</span>().<span class="f">click</span>();
+<span class="k">await</span> page.<span class="f">locator</span>(<span class="s">'button._2KpZ6l'</span>).<span class="f">click</span>();</pre>
+        <ul>
+          <li><b>✕</b>Raw locators duplicated across every test</li>
+          <li><b>✕</b>Ignores your page objects and fixtures</li>
+          <li><b>✕</b>Brittle, generated class names and nth-child selectors</li>
+          <li><b>✕</b>No assertions unless you add them by hand</li>
+        </ul>
+      </div>
+      <div class="cmp good reveal">
+        <div class="cmp-head"><h3>TestFit output</h3><span class="tag pass">COMMIT</span></div>
+<pre><span class="k">await</span> homePage.<span class="f">goto</span>();
+<span class="k">await</span> homePage.<span class="f">search</span>(<span class="s">'wireless earbuds'</span>);
+<span class="k">await</span> homePage.<span class="f">openResult</span>(<span class="n">0</span>);
+<span class="k">await</span> <span class="f">expect</span>(productPage.price).<span class="f">toBeVisible</span>();
+<span class="k">await</span> productPage.<span class="f">addToCart</span>();
+<span class="k">await</span> <span class="f">expect</span>(productPage.cartBadge).<span class="f">toHaveText</span>(<span class="s">'1'</span>);</pre>
+        <ul>
+          <li><b>✓</b>Reuses your existing page object methods</li>
+          <li><b>✓</b>Follows your fixtures, naming and folder conventions</li>
+          <li><b>✓</b>Stable locators first: role, label, test-id</li>
+          <li><b>✓</b>HTML and CSS assertions added while recording</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="alt" id="features">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">MVP features</div>
+      <h2>Everything you need to go from click to commit.</h2>
+      <p class="lead">These are the core features. Install TestFit to explore the rest, since trying it on your own app is the most reliable way to judge it.</p>
+    </div>
+    <div class="features">
+      <div class="feat star reveal"><div class="ic">🧩</div><span class="lbl">The differentiator</span><h3>Framework profile</h3><p>Give TestFit your page objects, fixtures and coding guidelines once. Every test it writes follows them.</p></div>
+      <div class="feat star reveal"><div class="ic">🔗</div><span class="lbl">The differentiator</span><h3>Page object matching</h3><p>Recorded steps map to the methods you already have, like <code style="font-family:var(--mono);font-size:12.5px">loginPage.login(user)</code>, instead of three raw lines.</p></div>
+      <div class="feat reveal"><div class="ic">⏺</div><h3>Real session recording</h3><p>Clicks, typing, navigation, dropdowns, checkboxes and key presses, captured as you test.</p></div>
+      <div class="feat reveal"><div class="ic">🎯</div><h3>Smart, stable locators</h3><p>Prefers getByRole, getByLabel and getByTestId, and keeps fallbacks so tests stay less flaky.</p></div>
+      <div class="feat reveal"><div class="ic">✅</div><h3>HTML and CSS assertions</h3><p>Add text, visibility, value, count, URL and CSS style checks while recording, with a hotkey or right-click.</p></div>
+      <div class="feat reveal"><div class="ic">✏️</div><h3>Step editor</h3><p>Rename, delete or reorder steps before generating. Fix the flow, not the code.</p></div>
+      <div class="feat reveal"><div class="ic">🔒</div><h3>Secret masking</h3><p>Passwords and tokens become env variables. Credentials never end up hardcoded in a spec.</p></div>
+      <div class="feat reveal"><div class="ic">🧱</div><h3>New page object snippets</h3><p>Elements your POMs don't cover yet come out as ready-to-paste snippets in your style.</p></div>
+      <div class="feat reveal"><div class="ic">📤</div><h3>One-click export</h3><p>Copy to clipboard or download a .spec.ts that drops straight into your repo.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- AI -->
+<section id="ai">
+  <div class="wrap ai-grid">
+    <div class="reveal center">
+      <div class="eyebrow">Smart AI usage</div>
+      <h2>No API key. No tokens. No bill.</h2>
+      <p class="lead">TestFit builds a precise prompt from your recording and framework profile. Paste it into any free public model and pick the answer that fits best.</p>
+      <div class="ai-steps">
+        <div class="ai-step"><span class="num">1</span><div><h4>Copy the prompt</h4><p>Your steps, assertions and framework rules, packed into one prompt.</p></div></div>
+        <div class="ai-step"><span class="num">2</span><div><h4>Paste into any model</h4><p>ChatGPT, Gemini, Claude or another public model, on their free plans.</p></div></div>
+        <div class="ai-step"><span class="num">3</span><div><h4>Compare and keep the best</h4><p>Different models write differently. Compare outputs side by side and choose the best fit.</p></div></div>
+      </div>
+      <div class="no-key">🔑 <span><b>Zero setup.</b> Nothing to configure and no keys stored. Useful when your company restricts paid AI tools.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section class="alt" id="who">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">Who it's for</div>
+      <h2>For anyone who needs to keep testing.</h2>
+    </div>
+    <div class="who">
+      <div class="who-card reveal"><div class="e">🧑‍💻</div><h3>SDETs</h3><p>Skip the boilerplate and spend your time on strategy, flaky tests and coverage gaps.</p></div>
+      <div class="who-card reveal"><div class="e">🔍</div><h3>Manual testers and non-coders</h3><p>Record what you already test by hand and hand over automation-ready code.</p></div>
+      <div class="who-card reveal"><div class="e">🚧</div><h3>Teams without automation yet</h3><p>Build a test suite from day one, even before a framework is fully in place.</p></div>
+      <div class="who-card reveal"><div class="e">⚡</div><h3>Fast-moving dev cycles</h3><p>Features keep changing? Re-record in seconds instead of rewriting tests.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">How it works</div>
+      <h2>Four steps from browser to spec.</h2>
+    </div>
+    <div class="how">
+      <div class="how-step reveal"><h3>Set up your profile</h3><p>Add your page objects, fixtures and guidelines once. Reuse them for every recording.</p></div>
+      <div class="how-step reveal"><h3>Record the flow</h3><p>Open the side panel, hit record, and test your app the way you normally would.</p></div>
+      <div class="how-step reveal"><h3>Add assertions</h3><p>Right-click an element to check text, visibility or CSS, such as <code>toHaveCSS</code>.</p></div>
+      <div class="how-step reveal"><h3>Generate and export</h3><p>Get the .spec.ts, drop it into your repo, and run <code>npx playwright test</code>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MORE FEATURES -->
+<section class="alt" id="more">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">Also built in</div>
+      <h2>The details that make tests reliable.</h2>
+      <p class="lead">All of these ship today. Install TestFit to try them on your own app.</p>
+    </div>
+    <div class="who">
+      <div class="who-card reveal"><div class="e">📏</div><h3>Guideline rules</h3><p>Enforce your rules, like no hard waits and no XPath, and get flagged when generated code breaks one.</p></div>
+      <div class="who-card reveal"><div class="e">🌐</div><h3>Smart network waits</h3><p>Captures key network calls and waits on real responses instead of <code style="font-family:var(--mono);font-size:12.5px">waitForTimeout</code>.</p></div>
+      <div class="who-card reveal"><div class="e">▶️</div><h3>Replay in the extension</h3><p>Replay a recorded flow in the browser to verify it before you export the spec.</p></div>
+      <div class="who-card reveal"><div class="e">👥</div><h3>Shared team profiles</h3><p>Everyone generates against the same framework config, so tests stay consistent across the team.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <div class="eyebrow" style="justify-content:center">Get started</div>
+      <h2>Stop rewriting recorded tests.</h2>
+      <p class="lead">Install TestFit free from the Chrome Web Store, record your first flow, and see your own framework come back as code.</p>
+      <div class="ctas">
+          <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/gnafbfhcgcigcmeflgcgmhmbchomgmgh?utm_source=item-share-cb" target="_blank" rel="noopener">Add to Chrome, it's free</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/sagar-bobade/" target="_blank" rel="noopener">Share feedback</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">FAQ</div>
+      <h2>Questions, answered.</h2>
+    </div>
+    <div class="faq">
+      <details class="reveal"><summary>Is TestFit free?</summary><p>Yes. TestFit is free to install from the Chrome Web Store, with no sign-up and no credit card.</p></details>
+      <details class="reveal"><summary>Do I need an OpenAI or Gemini API key?</summary><p>No. TestFit creates a prompt that you paste into any public model, like ChatGPT, Gemini or Claude, on their free plans. You can compare outputs from several models and keep the best one.</p></details>
+      <details class="reveal"><summary>How is this different from Playwright's codegen?</summary><p>Codegen records raw locators on the page. TestFit maps your steps to your existing page objects, fixtures and coding guidelines, so the output matches how your team already writes tests.</p></details>
+      <details class="reveal"><summary>We don't have a framework yet. Can I still use it?</summary><p>Yes. Without a profile, TestFit generates clean Playwright TypeScript with stable locators and assertions, plus page object snippets you can build a framework from.</p></details>
+      <details class="reveal"><summary>I'm not a coder. Will this work for me?</summary><p>Yes. Recording a flow and adding assertions needs no code. You can hand the generated spec to an SDET or developer to add to the repo.</p></details>
+      <details class="reveal"><summary>Is my data safe?</summary><p>Recordings and your framework profile stay in your browser. TestFit doesn't send them to any server. You decide what goes into an AI tool when you paste the prompt. See the <a href="https://sagarbobade.github.io/testfit-privacy/" target="_blank" rel="noopener" style="color:var(--accent)">privacy policy</a>.</p></details>
+      <details class="reveal"><summary>Which frameworks are supported?</summary><p>TestFit generates Playwright tests in TypeScript.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#top" class="logo" style="margin-bottom:12px">
+          <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="m9.5 15 1.8 1.8 3.4-3.6"/></svg></span>
+          TestFit
+        </a>
+        <p style="max-width:300px">Built with ❤️ for those who value their time.</p>
+      </div>
+      <div><h5>Product</h5><ul><li><a href="#features">Features</a></li><li><a href="#how">How it works</a></li><li><a href="#more">More features</a></li><li><a href="https://sagarbobade.github.io/testfit-privacy/" target="_blank" rel="noopener">Privacy policy</a></li></ul></div>
+      <div><h5>More QA tools</h5><ul><li><a href="https://chromewebstore.google.com/detail/ifiehfimgfiemenlcfgopapgjpdcpghm?utm_source=item-share-cb" target="_blank" rel="noopener">BugReporter</a></li><li><a href="https://chromewebstore.google.com/detail/cpeocgdgoopflcgmpohkcgnigkfhokdm?utm_source=item-share-cb" target="_blank" rel="noopener">Test Data Generator</a></li></ul></div>
+      <div><h5>Connect</h5><ul><li><a href="https://www.linkedin.com/in/sagar-bobade/" target="_blank" rel="noopener">LinkedIn</a></li><li><a href="https://github.com/SagarBobade" target="_blank" rel="noopener">GitHub</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 Sagar Bobade. All rights reserved. · <a href="https://sagarbobade.github.io/testfit-privacy/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Privacy policy</a></span><span>Find TestFit helpful? A Chrome Web Store review helps a lot ⭐</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const root=document.documentElement, icon=document.getElementById('themeIcon');
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+  function setTheme(t){root.setAttribute('data-theme',t);icon.innerHTML=t==='dark'?sun:moon;try{localStorage.setItem('testfit-theme',t)}catch(e){}}
+  let saved=null;try{saved=localStorage.getItem('testfit-theme')}catch(e){}
+  setTheme(saved||'dark');
+  document.getElementById('themeBtn').addEventListener('click',()=>setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark'));
+
+  const nav=document.getElementById('nav');
+  document.getElementById('menuBtn').addEventListener('click',()=>nav.classList.toggle('open'));
+  document.querySelectorAll('#navLinks a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+
+  function route(){const p=location.hash==='#privacy';document.body.classList.toggle('show-privacy',p);if(p)window.scrollTo(0,0)}
+  window.addEventListener('hashchange',route);route();
+
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Recorder steps animation
+  const steps=[...document.querySelectorAll('#stepsList .st')];
+  function play(){
+    steps.forEach(s=>s.classList.remove('show','cur'));
+    if(reduce){steps.forEach(s=>s.classList.add('show'));return}
+    steps.forEach((s,i)=>setTimeout(()=>{steps.forEach(x=>x.classList.remove('cur'));s.classList.add('show','cur')},400+i*700));
+    setTimeout(play,400+steps.length*700+3500);
+  }
+  play();
+
+  // Copy buttons
+  document.querySelectorAll('.copy-btn').forEach(b=>b.addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText(document.getElementById(b.dataset.copy).innerText);b.textContent='Copied ✓'}
+    catch(e){b.textContent='Select & copy'}
+    setTimeout(()=>b.textContent='Copy',1800);
+  }));
+
+  // Reveal + model bars
+  const els=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window&&!reduce){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+    els.forEach(el=>io.observe(el));
+  }else{els.forEach(el=>el.classList.add('in'))}
+})();
+</script>
+</body>
+</html>
