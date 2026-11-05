@@ -9,6 +9,9 @@
 <meta property="og:description" content="Record a real browser flow. Get Playwright TypeScript that reuses your page objects and fixtures, with HTML and CSS assertions. No API key needed.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2DA44E">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAABoElEQVR42u3cgQmDMABE0SzkKk7pnhFXCAjG/4Rb4O5RWqsZ4+XruM4p6xm7XMYKwjBEFIPSoxCUHIag2DAChYYRKDKMQIFhBIoLI1BYGIGi4giUFAagoDgC5YQBKCaOQCkAKKYKQCFxBMoAQCEACAACgMQAKCKOQAkAKAIAAUAAEAAEAAFAABAAPpnnMlwcAAQAgAAACABAAAAIAIAAAAgAQAAACACAAAAIAEAAAAgAgAAACABAAAAIAIAAAAQAgAAACACAAAAEAIAAAAgA5CEAEEcAQBwCAHEIAMQhAOATAADfAQDwKwAA9wEAcCcQAP8FAODfQAA8DwCAJ4IA8EwgAJ4KBsB7AQBMbwZ5NxAAbwcD4HwAAJwQAoAzggBwShgAzgkEwEmhAGwDwNhhAIaOAjBwFIBhowAMGgZgzCgAI0YBGC8MwHBhAAKAACAACAACgAAgAAgAsgjguRQRHh8AAAAAQBkACAASBQBBfHwAAACgDgCC+PgAAABBfXwAAICgPj4ExofA+BAYHwLjQ2B8CIwPguFBMDwMRgfjh0Pf9mEfgQn0XuUAAAAASUVORK5CYII=">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAABoElEQVR42u3cgQmDMABE0SzkKk7pnhFXCAjG/4Rb4O5RWqsZ4+XruM4p6xm7XMYKwjBEFIPSoxCUHIag2DAChYYRKDKMQIFhBIoLI1BYGIGi4giUFAagoDgC5YQBKCaOQCkAKKYKQCFxBMoAQCEACAACgMQAKCKOQAkAKAIAAUAAEAAEAAFAABAAPpnnMlwcAAQAgAAACABAAAAIAIAAAAgAQAAACACAAAAIAEAAAAgAgAAACABAAAAIAIAAAAQAgAAACACAAAAEAIAAAAgA5CEAEEcAQBwCAHEIAMQhAOATAADfAQDwKwAA9wEAcCcQAP8FAODfQAA8DwCAJ4IA8EwgAJ4KBsB7AQBMbwZ5NxAAbwcD4HwAAJwQAoAzggBwShgAzgkEwEmhAGwDwNhhAIaOAjBwFIBhowAMGgZgzCgAI0YBGC8MwHBhAAKAACAACAACgAAgAAgAsgjguRQRHh8AAAAAQBkACAASBQBBfHwAAACgDgCC+PgAAABBfXwAAICgPj4ExofA+BAYHwLjQ2B8CIwPguFBMDwMRgfjh0Pf9mEfgQn0XuUAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,11 +20,11 @@
 </script>
 <style>
   :root{
-    --bg:#090C0D; --bg-2:#0E1213; --surface:#131819; --surface-2:#192021;
-    --border:#222B2D; --border-2:#2D383A;
-    --text:#E6EDEE; --muted:#97A5A7; --faint:#687779;
-    --accent:#2DD4BF; --accent-2:#14B8A6; --accent-ink:#04201C; --accent-soft:rgba(45,212,191,.11);
-    --pass:#34D399; --fail:#F87171; --warn:#FBBF24;
+    --bg:#0A0D0B; --bg-2:#0F1310; --surface:#141915; --surface-2:#1A201B;
+    --border:#232B25; --border-2:#2E3830;
+    --text:#E6EDE8; --muted:#98A59C; --faint:#6A776E;
+    --accent:#3FB950; --accent-2:#2DA44E; --accent-3:#7EE787; --accent-ink:#04170A; --accent-soft:rgba(63,185,80,.12);
+    --pass:#3FB950; --fail:#F87171; --warn:#FBBF24;
     --radius:14px; --radius-sm:10px;
     --shadow:0 12px 40px -14px rgba(0,0,0,.65);
     --sans:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
@@ -29,13 +32,13 @@
     --grid-line:rgba(255,255,255,.035);
   }
   [data-theme="light"]{
-    --bg:#F9FBFB; --bg-2:#F1F5F5; --surface:#FFFFFF; --surface-2:#F4F7F7;
-    --border:#E2E8E8; --border-2:#D0D9D9;
-    --text:#0D1617; --muted:#4F5E60; --faint:#7A8889;
-    --accent:#0D9488; --accent-2:#0F766E; --accent-ink:#FFFFFF; --accent-soft:rgba(13,148,136,.09);
-    --pass:#059669; --fail:#DC2626; --warn:#B45309;
-    --shadow:0 12px 30px -14px rgba(13,22,23,.18);
-    --grid-line:rgba(13,22,23,.045);
+    --bg:#F9FBF9; --bg-2:#F1F5F2; --surface:#FFFFFF; --surface-2:#F4F7F5;
+    --border:#E1E8E3; --border-2:#CFD9D2;
+    --text:#0D1610; --muted:#4E5E53; --faint:#78887D;
+    --accent:#1F883D; --accent-2:#1A7F37; --accent-3:#2DA44E; --accent-ink:#FFFFFF; --accent-soft:rgba(31,136,61,.09);
+    --pass:#1A7F37; --fail:#DC2626; --warn:#B45309;
+    --shadow:0 12px 30px -14px rgba(13,22,16,.18);
+    --grid-line:rgba(13,22,16,.045);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -67,7 +70,8 @@
   .nav{position:sticky;top:0;z-index:50;backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--border)}
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
   .logo{display:flex;align-items:center;gap:10px;font-weight:750;font-size:17.5px;letter-spacing:-.02em}
-  .logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#38BDF8);display:grid;place-items:center}
+  .logo-img{width:30px;height:30px;border-radius:8px;display:block}
+  .logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-3));display:grid;place-items:center}
   .logo-mark svg{width:17px;height:17px}
   .nav-links{display:flex;gap:26px;font-size:14.5px;color:var(--muted)}
   .nav-links a:hover{color:var(--text)}
@@ -85,7 +89,7 @@
   .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border:1px solid var(--border-2);border-radius:999px;font-size:13px;color:var(--muted);background:var(--surface);margin-bottom:26px}
   .pill b{background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:999px;font-weight:600;font-size:12px}
   .hero h1{font-size:clamp(38px,6vw,66px);font-weight:800;margin-bottom:20px}
-  .grad{background:linear-gradient(100deg,var(--accent) 10%,#38BDF8 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .grad{background:linear-gradient(100deg,var(--accent) 10%,var(--accent-3) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
   .hero .lead{margin:0 auto 32px;font-size:18.5px}
   .ctas{display:flex;gap:12px;flex-wrap:wrap}
   .hero .ctas{justify-content:center}
@@ -268,7 +272,7 @@
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
     <a href="#top" class="logo" aria-label="TestFit home">
-      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="m9.5 15 1.8 1.8 3.4-3.6"/></svg></span>
+      <img class="logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAABoElEQVR42u3cgQmDMABE0SzkKk7pnhFXCAjG/4Rb4O5RWqsZ4+XruM4p6xm7XMYKwjBEFIPSoxCUHIag2DAChYYRKDKMQIFhBIoLI1BYGIGi4giUFAagoDgC5YQBKCaOQCkAKKYKQCFxBMoAQCEACAACgMQAKCKOQAkAKAIAAUAAEAAEAAFAABAAPpnnMlwcAAQAgAAACABAAAAIAIAAAAgAQAAACACAAAAIAEAAAAgAgAAACABAAAAIAIAAAAQAgAAACACAAAAEAIAAAAgA5CEAEEcAQBwCAHEIAMQhAOATAADfAQDwKwAA9wEAcCcQAP8FAODfQAA8DwCAJ4IA8EwgAJ4KBsB7AQBMbwZ5NxAAbwcD4HwAAJwQAoAzggBwShgAzgkEwEmhAGwDwNhhAIaOAjBwFIBhowAMGgZgzCgAI0YBGC8MwHBhAAKAACAACAACgAAgAAgAsgjguRQRHh8AAAAAQBkACAASBQBBfHwAAACgDgCC+PgAAABBfXwAAICgPj4ExofA+BAYHwLjQ2B8CIwPguFBMDwMRgfjh0Pf9mEfgQn0XuUAAAAASUVORK5CYII=" alt="" width="30" height="30">
       TestFit
     </a>
     <nav class="nav-links" id="navLinks">
@@ -535,7 +539,7 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
     <div class="foot-grid">
       <div>
         <a href="#top" class="logo" style="margin-bottom:12px">
-          <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="m9.5 15 1.8 1.8 3.4-3.6"/></svg></span>
+          <img class="logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAABoElEQVR42u3cgQmDMABE0SzkKk7pnhFXCAjG/4Rb4O5RWqsZ4+XruM4p6xm7XMYKwjBEFIPSoxCUHIag2DAChYYRKDKMQIFhBIoLI1BYGIGi4giUFAagoDgC5YQBKCaOQCkAKKYKQCFxBMoAQCEACAACgMQAKCKOQAkAKAIAAUAAEAAEAAFAABAAPpnnMlwcAAQAgAAACABAAAAIAIAAAAgAQAAACACAAAAIAEAAAAgAgAAACABAAAAIAIAAAAQAgAAACACAAAAEAIAAAAgA5CEAEEcAQBwCAHEIAMQhAOATAADfAQDwKwAA9wEAcCcQAP8FAODfQAA8DwCAJ4IA8EwgAJ4KBsB7AQBMbwZ5NxAAbwcD4HwAAJwQAoAzggBwShgAzgkEwEmhAGwDwNhhAIaOAjBwFIBhowAMGgZgzCgAI0YBGC8MwHBhAAKAACAACAACgAAgAAgAsgjguRQRHh8AAAAAQBkACAASBQBBfHwAAACgDgCC+PgAAABBfXwAAICgPj4ExofA+BAYHwLjQ2B8CIwPguFBMDwMRgfjh0Pf9mEfgQn0XuUAAAAASUVORK5CYII=" alt="" width="30" height="30">
           TestFit
         </a>
         <p style="max-width:300px">Built with ❤️ for those who value their time.</p>
