@@ -302,7 +302,7 @@
     <div class="hero-top">
       <a href="#features" class="pill"><b>Free</b> See everything TestFit can do →</a>
       <h1>Record once.<br>Get Playwright tests that <span class="grad">fit your framework.</span></h1>
-      <p class="lead">TestFit records your real browser session as Playwright steps, re-runs it, and writes Playwright TypeScript using <strong>your</strong> page objects, fixtures and coding guidelines. The output looks like a teammate wrote it, not a recorder.</p>
+      <p class="lead">TestFit records your real browser session as Playwright steps, re-runs it, and writes Playwright TypeScript using <strong>your</strong> page objects, fixtures and coding guidelines. You get a draft that reuses your code, checked against your repo and reviewed by you before anything is written.</p>
       <div class="ctas">
           <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/gnafbfhcgcigcmeflgcgmhmbchomgmgh?utm_source=item-share-cb" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5h8.5M8.9 13.8 4.6 6.4M15.1 13.8l-4.3 7.4"/></svg>Add to Chrome, it's free</a>
         <a class="btn btn-ghost" href="#features">Explore features</a>
@@ -356,8 +356,8 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
   <div class="wrap">
     <div class="section-head center reveal">
       <div class="eyebrow">See it in action</div>
-      <h2>A real Flipkart flow, automated in under a minute.</h2>
-      <p class="lead">Recorded in the browser, turned into framework-ready Playwright TypeScript, then run, with HTML and CSS assertions passing.</p>
+      <h2>A real flow, from recording to a reviewed test.</h2>
+      <p class="lead">Recorded in the browser, re-run, then turned into Playwright TypeScript that reuses page objects. <!-- Describe only what the final video shows. --></p>
     </div>
     <!-- TODO: replace with <video src="testfit-demo.mp4" controls muted playsinline poster="poster.png" style="width:100%;height:100%;object-fit:cover"></video> -->
     <div class="video reveal" role="img" aria-label="TestFit demo video placeholder">
@@ -376,12 +376,12 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
   <div class="wrap">
     <div class="section-head center reveal">
       <div class="eyebrow">Why TestFit</div>
-      <h2>Most recorders give you code to rewrite.<br>TestFit gives you code to commit.</h2>
+      <h2>Most recorders give you code to rewrite.<br>TestFit drafts it in your framework.</h2>
       <p class="lead">A generic recorder doesn't know your framework, so you end up refactoring every line. TestFit starts from what your team already has.</p>
     </div>
     <div class="compare">
       <div class="cmp bad reveal">
-        <div class="cmp-head"><h3>Generic recorder output</h3><span class="tag fail">REWRITE</span></div>
+        <div class="cmp-head"><h3>Generic recorder output</h3><span class="tag fail">RAW RECORDING</span></div>
 <pre><span class="k">await</span> page.<span class="f">goto</span>(<span class="s">'https://www.flipkart.com/'</span>);
 <span class="k">await</span> page.<span class="f">locator</span>(<span class="s">'input[name="q"]'</span>).<span class="f">click</span>();
 <span class="k">await</span> page.<span class="f">locator</span>(<span class="s">'input[name="q"]'</span>).<span class="f">fill</span>(<span class="s">'wireless earbuds'</span>);
@@ -396,7 +396,7 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
         </ul>
       </div>
       <div class="cmp good reveal">
-        <div class="cmp-head"><h3>TestFit output</h3><span class="tag pass">COMMIT</span></div>
+        <div class="cmp-head"><h3>TestFit output</h3><span class="tag pass">FRAMEWORK DRAFT</span></div>
 <pre><span class="k">await</span> homePage.<span class="f">goto</span>();
 <span class="k">await</span> homePage.<span class="f">search</span>(<span class="s">'wireless earbuds'</span>);
 <span class="k">await</span> homePage.<span class="f">openResult</span>(<span class="n">0</span>);
@@ -411,6 +411,7 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
         </ul>
       </div>
     </div>
+    <p class="models-note reveal" style="text-align:center;margin-top:18px">Illustrative example. Real output depends on your recording, your repo and the AI model, and you review it before it is written.</p>
   </div>
 </section>
 
@@ -419,17 +420,17 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
   <div class="wrap">
     <div class="section-head center reveal">
       <div class="eyebrow">Features</div>
-      <h2>Everything you need to go from click to commit.</h2>
+      <h2>Everything you need to go from click to a reviewed test.</h2>
       <p class="lead">These are the core features. Install TestFit to explore the rest, since trying it on your own app is the most reliable way to judge it.</p>
     </div>
     <div class="features">
-      <div class="feat star reveal"><div class="ic">🧩</div><span class="lbl">The differentiator</span><h3>Framework profile</h3><p>Connect your test repo once. TestFit reads its page objects, fixtures and guidelines, and you can pick example files for it to copy. Every test it writes follows them.</p></div>
+      <div class="feat star reveal"><div class="ic">🧩</div><span class="lbl">The differentiator</span><h3>Framework profile</h3><p>Connect your test repo once. TestFit reads its page objects, fixtures and guidelines, and you can pick example files for it to copy. Generated code is asked to follow them, and checked against your guidelines.</p></div>
       <div class="feat star reveal"><div class="ic">🔗</div><span class="lbl">The differentiator</span><h3>Page object matching</h3><p>Recorded steps map to the methods you already have, like <code style="font-family:var(--mono);font-size:12.5px">loginPage.login(user)</code>, instead of three raw lines.</p></div>
       <div class="feat reveal"><div class="ic">⏺</div><h3>Real session recording</h3><p>Clicks, typing, navigation, dropdowns, checkboxes and key presses, captured as you test.</p></div>
       <div class="feat reveal"><div class="ic">🎯</div><h3>Smart, stable locators</h3><p>Prefers getByRole, getByLabel and getByTestId, and replaces generated IDs and class names with stable locators.</p></div>
       <div class="feat reveal"><div class="ic">✅</div><h3>HTML and CSS assertions</h3><p>Add visibility, text, value and URL checks while recording, from the panel or a right-click, plus CSS and other checks on any element. TestFit also suggests assertions for what each action changed.</p></div>
       <div class="feat reveal"><div class="ic">✏️</div><h3>Step editor</h3><p>Change a step's value or code, or delete it, before you re-run or generate. Fix the flow, not the code.</p></div>
-      <div class="feat reveal"><div class="ic">🔒</div><h3>Secret masking</h3><p>Passwords, codes and card numbers become env variables. Credentials never end up hardcoded in a spec.</p></div>
+      <div class="feat reveal"><div class="ic">🔒</div><h3>Secret masking</h3><p>Passwords, codes and card numbers you type become env variables, not hardcoded values in a spec.</p></div>
       <div class="feat reveal"><div class="ic">🧱</div><h3>New page objects</h3><p>Pages your repo doesn't cover yet get new page objects in your style. With no repo, TestFit writes standard Page Object Model code.</p></div>
       <div class="feat reveal"><div class="ic">📤</div><h3>Copy or write to your repo</h3><p>Copy the plain Playwright code at any time, with no AI needed. Or review the generated files and write them straight into your repo.</p></div>
     </div>
@@ -462,7 +463,7 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
     </div>
     <div class="who">
       <div class="who-card reveal"><div class="e">🧑‍💻</div><h3>SDETs</h3><p>Skip the boilerplate and spend your time on strategy, flaky tests and coverage gaps.</p></div>
-      <div class="who-card reveal"><div class="e">🔍</div><h3>Manual testers and non-coders</h3><p>Record what you already test by hand and hand over automation-ready code.</p></div>
+      <div class="who-card reveal"><div class="e">🔍</div><h3>Manual testers and non-coders</h3><p>Record what you already test by hand and hand over a working Playwright test an SDET can build on.</p></div>
       <div class="who-card reveal"><div class="e">🚧</div><h3>Teams without automation yet</h3><p>Build a test suite from day one, even before a framework is fully in place.</p></div>
       <div class="who-card reveal"><div class="e">⚡</div><h3>Fast-moving dev cycles</h3><p>Features keep changing? Re-record in seconds instead of rewriting tests.</p></div>
     </div>
@@ -490,7 +491,7 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
   <div class="wrap">
     <div class="section-head center reveal">
       <div class="eyebrow">Also built in</div>
-      <h2>The details that make tests reliable.</h2>
+      <h2>The details that make tests more reliable.</h2>
       <p class="lead">All of these ship today. Install TestFit to try them on your own app.</p>
     </div>
     <div class="who">
@@ -511,7 +512,7 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
   <div class="wrap">
     <div class="cta-box reveal">
       <div class="eyebrow" style="justify-content:center">Get started</div>
-      <h2>Stop rewriting recorded tests.</h2>
+      <h2>Spend less time rewriting recorded tests.</h2>
       <p class="lead">Install TestFit free from the Chrome Web Store, record your first flow, and see your own framework come back as code.</p>
       <div class="ctas">
           <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/gnafbfhcgcigcmeflgcgmhmbchomgmgh?utm_source=item-share-cb" target="_blank" rel="noopener">Add to Chrome, it's free</a>
@@ -531,7 +532,8 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
     <div class="faq">
       <details class="reveal"><summary>Is TestFit free?</summary><p>Yes. TestFit is free to install from the Chrome Web Store, with no sign-up and no credit card. If you generate code with a hosted AI provider, that provider bills your own API key at its usual rates. A local model costs nothing.</p></details>
       <details class="reveal"><summary>Do I need an AI API key?</summary><p>Only to generate framework code. Recording, assertions, re-runs, schedules and copying the plain Playwright code need no key. To generate code, add a key for Anthropic, OpenAI or Google Gemini, or point TestFit at a local model such as Ollama or LM Studio, which needs no key.</p></details>
-      <details class="reveal"><summary>How is this different from Playwright's codegen?</summary><p>Codegen records raw locators on the page. TestFit maps your steps to your existing page objects, fixtures and coding guidelines, so the output matches how your team already writes tests.</p></details>
+      <details class="reveal"><summary>How is this different from Playwright's codegen?</summary><p>Codegen records raw locators on the page. TestFit maps your steps to your existing page objects, fixtures and coding guidelines, so the output starts from how your team already writes tests.</p></details>
+      <details class="reveal"><summary>Is the generated code ready to commit?</summary><p>Often close, not always. It's a draft. TestFit type-checks it against your repo, lints it against your guidelines and checks its locators on the live page. Problems go back to the AI to fix. Then you review each file before anything is written. Expect to adjust names, test data or an assertion now and then. Long flows, and repos with few page objects, need more review.</p></details>
       <details class="reveal"><summary>We don't have a framework yet. Can I still use it?</summary><p>Yes. Without a repo, TestFit generates standard Playwright Page Object Model code: page objects in <code>pages/</code> and specs in <code>tests/</code>, with stable locators and your assertions. It's a good start for a framework.</p></details>
       <details class="reveal"><summary>I'm not a coder. Will this work for me?</summary><p>Yes. Recording a flow and adding assertions needs no code. You can hand the generated spec to an SDET or developer to add to the repo.</p></details>
       <details class="reveal"><summary>Is my data safe?</summary><p>Recordings, results and your settings stay in your browser. TestFit has no server and no analytics. Only when you generate code or write a bug report with AI does it send a request, straight from your browser to the provider you chose. You can preview that request first, emails and phone numbers are replaced with placeholders, and passwords are never sent. See the <a href="https://sagarbobade.github.io/testfit-privacy/" target="_blank" rel="noopener" style="color:var(--accent)">privacy policy</a>.</p></details>
