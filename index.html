@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TestFit — Record once. Get Playwright tests that fit your framework.</title>
-<meta name="description" content="TestFit is a free Chrome extension that records your browser session and generates Playwright TypeScript tests that reuse your page objects, fixtures and coding guidelines. No AI API key needed.">
+<meta name="description" content="TestFit is a free Chrome extension that records your browser session as Playwright tests, re-runs them, and turns them into TypeScript that reuses your page objects, fixtures and coding guidelines. Recording and re-runs need no AI key.">
 <meta property="og:title" content="TestFit — Playwright tests that fit your framework">
-<meta property="og:description" content="Record a real browser flow. Get Playwright TypeScript that reuses your page objects and fixtures, with HTML and CSS assertions. No API key needed.">
+<meta property="og:description" content="Record a real browser flow, re-run it, and get Playwright TypeScript that reuses your page objects and fixtures. Recording needs no AI key.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#2DA44E">
@@ -216,6 +216,9 @@
   summary::after{content:"+";font-family:var(--mono);color:var(--faint);font-size:18px;transition:transform .2s}
   details[open] summary::after{transform:rotate(45deg)}
   details p{color:var(--muted);font-size:15px;padding:0 0 18px}
+  details code{font-family:var(--mono);font-size:13px}
+  .news{list-style:none;display:grid;gap:10px;padding:0 0 18px;color:var(--muted);font-size:15px}
+  .news b{color:var(--text)}
 
   /* CTA */
   .cta-box{border:1px solid var(--border-2);border-radius:20px;padding:60px 32px;text-align:center;background:radial-gradient(ellipse at 50% 0%,var(--accent-soft),transparent 65%),var(--surface)}
@@ -277,10 +280,11 @@
     </a>
     <nav class="nav-links" id="navLinks">
       <a href="#features">Features</a>
-      <a href="#ai">No API key</a>
+      <a href="#ai">AI</a>
       <a href="#how">How it works</a>
       <a href="#more">More features</a>
       <a href="#faq">FAQ</a>
+      <a href="#support">Support</a>
     </nav>
     <div class="nav-right">
       <button class="icon-btn" id="themeBtn" aria-label="Toggle light or dark theme"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg></button>
@@ -298,13 +302,13 @@
     <div class="hero-top">
       <a href="#features" class="pill"><b>Free</b> See everything TestFit can do →</a>
       <h1>Record once.<br>Get Playwright tests that <span class="grad">fit your framework.</span></h1>
-      <p class="lead">TestFit records your real browser session and writes Playwright TypeScript using <strong>your</strong> page objects, fixtures and coding guidelines. The output looks like a teammate wrote it, not a recorder.</p>
+      <p class="lead">TestFit records your real browser session as Playwright steps, re-runs it, and writes Playwright TypeScript using <strong>your</strong> page objects, fixtures and coding guidelines. The output looks like a teammate wrote it, not a recorder.</p>
       <div class="ctas">
           <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/gnafbfhcgcigcmeflgcgmhmbchomgmgh?utm_source=item-share-cb" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5h8.5M8.9 13.8 4.6 6.4M15.1 13.8l-4.3 7.4"/></svg>Add to Chrome, it's free</a>
         <a class="btn btn-ghost" href="#features">Explore features</a>
       </div>
       <div class="checks">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>No AI API key needed</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>Record and re-run without an AI key</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>No coding to record</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>Runs in your browser</span>
       </div>
@@ -414,20 +418,20 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
 <section class="alt" id="features">
   <div class="wrap">
     <div class="section-head center reveal">
-      <div class="eyebrow">MVP features</div>
+      <div class="eyebrow">Features</div>
       <h2>Everything you need to go from click to commit.</h2>
       <p class="lead">These are the core features. Install TestFit to explore the rest, since trying it on your own app is the most reliable way to judge it.</p>
     </div>
     <div class="features">
-      <div class="feat star reveal"><div class="ic">🧩</div><span class="lbl">The differentiator</span><h3>Framework profile</h3><p>Give TestFit your page objects, fixtures and coding guidelines once. Every test it writes follows them.</p></div>
+      <div class="feat star reveal"><div class="ic">🧩</div><span class="lbl">The differentiator</span><h3>Framework profile</h3><p>Connect your test repo once. TestFit reads its page objects, fixtures and guidelines, and you can pick example files for it to copy. Every test it writes follows them.</p></div>
       <div class="feat star reveal"><div class="ic">🔗</div><span class="lbl">The differentiator</span><h3>Page object matching</h3><p>Recorded steps map to the methods you already have, like <code style="font-family:var(--mono);font-size:12.5px">loginPage.login(user)</code>, instead of three raw lines.</p></div>
       <div class="feat reveal"><div class="ic">⏺</div><h3>Real session recording</h3><p>Clicks, typing, navigation, dropdowns, checkboxes and key presses, captured as you test.</p></div>
-      <div class="feat reveal"><div class="ic">🎯</div><h3>Smart, stable locators</h3><p>Prefers getByRole, getByLabel and getByTestId, and keeps fallbacks so tests stay less flaky.</p></div>
-      <div class="feat reveal"><div class="ic">✅</div><h3>HTML and CSS assertions</h3><p>Add text, visibility, value, count, URL and CSS style checks while recording, with a hotkey or right-click.</p></div>
-      <div class="feat reveal"><div class="ic">✏️</div><h3>Step editor</h3><p>Rename, delete or reorder steps before generating. Fix the flow, not the code.</p></div>
-      <div class="feat reveal"><div class="ic">🔒</div><h3>Secret masking</h3><p>Passwords and tokens become env variables. Credentials never end up hardcoded in a spec.</p></div>
-      <div class="feat reveal"><div class="ic">🧱</div><h3>New page object snippets</h3><p>Elements your POMs don't cover yet come out as ready-to-paste snippets in your style.</p></div>
-      <div class="feat reveal"><div class="ic">📤</div><h3>One-click export</h3><p>Copy to clipboard or download a .spec.ts that drops straight into your repo.</p></div>
+      <div class="feat reveal"><div class="ic">🎯</div><h3>Smart, stable locators</h3><p>Prefers getByRole, getByLabel and getByTestId, and replaces generated IDs and class names with stable locators.</p></div>
+      <div class="feat reveal"><div class="ic">✅</div><h3>HTML and CSS assertions</h3><p>Add visibility, text, value and URL checks while recording, from the panel or a right-click, plus CSS and other checks on any element. TestFit also suggests assertions for what each action changed.</p></div>
+      <div class="feat reveal"><div class="ic">✏️</div><h3>Step editor</h3><p>Change a step's value or code, or delete it, before you re-run or generate. Fix the flow, not the code.</p></div>
+      <div class="feat reveal"><div class="ic">🔒</div><h3>Secret masking</h3><p>Passwords, codes and card numbers become env variables. Credentials never end up hardcoded in a spec.</p></div>
+      <div class="feat reveal"><div class="ic">🧱</div><h3>New page objects</h3><p>Pages your repo doesn't cover yet get new page objects in your style. With no repo, TestFit writes standard Page Object Model code.</p></div>
+      <div class="feat reveal"><div class="ic">📤</div><h3>Copy or write to your repo</h3><p>Copy the plain Playwright code at any time, with no AI needed. Or review the generated files and write them straight into your repo.</p></div>
     </div>
   </div>
 </section>
@@ -436,15 +440,15 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
 <section id="ai">
   <div class="wrap ai-grid">
     <div class="reveal center">
-      <div class="eyebrow">Smart AI usage</div>
-      <h2>No API key. No tokens. No bill.</h2>
-      <p class="lead">TestFit builds a precise prompt from your recording and framework profile. Paste it into any free public model and pick the answer that fits best.</p>
+      <div class="eyebrow">Your AI, your choice</div>
+      <h2>Bring your own AI, or run it on your machine.</h2>
+      <p class="lead">AI is only used to turn a recording into framework code. TestFit sends the request straight from your browser to the provider you choose. There is no TestFit server in between.</p>
       <div class="ai-steps">
-        <div class="ai-step"><span class="num">1</span><div><h4>Copy the prompt</h4><p>Your steps, assertions and framework rules, packed into one prompt.</p></div></div>
-        <div class="ai-step"><span class="num">2</span><div><h4>Paste into any model</h4><p>ChatGPT, Gemini, Claude or another public model, on their free plans.</p></div></div>
-        <div class="ai-step"><span class="num">3</span><div><h4>Compare and keep the best</h4><p>Different models write differently. Compare outputs side by side and choose the best fit.</p></div></div>
+        <div class="ai-step"><span class="num">1</span><div><h4>Pick a provider</h4><p>Anthropic, OpenAI or Google Gemini with your own API key, or a local model like Ollama or LM Studio, with no key at all.</p></div></div>
+        <div class="ai-step"><span class="num">2</span><div><h4>See what is sent</h4><p>Preview the exact request first. Emails and phone numbers are replaced with placeholders, and passwords are never sent.</p></div></div>
+        <div class="ai-step"><span class="num">3</span><div><h4>Checked before you keep it</h4><p>The code is type-checked against your repo and linted against your guidelines. Problems go back to the AI to fix.</p></div></div>
       </div>
-      <div class="no-key">🔑 <span><b>Zero setup.</b> Nothing to configure and no keys stored. Useful when your company restricts paid AI tools.</span></div>
+      <div class="no-key">🔑 <span><b>No key? No problem.</b> Recording, assertions, re-runs, schedules and the plain Playwright code all work without one. A local model costs nothing and keeps everything on your computer.</span></div>
     </div>
   </div>
 </section>
@@ -473,10 +477,10 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
       <h2>Four steps from browser to spec.</h2>
     </div>
     <div class="how">
-      <div class="how-step reveal"><h3>Set up your profile</h3><p>Add your page objects, fixtures and guidelines once. Reuse them for every recording.</p></div>
       <div class="how-step reveal"><h3>Record the flow</h3><p>Open the side panel, hit record, and test your app the way you normally would.</p></div>
-      <div class="how-step reveal"><h3>Add assertions</h3><p>Right-click an element to check text, visibility or CSS, such as <code>toHaveCSS</code>.</p></div>
-      <div class="how-step reveal"><h3>Generate and export</h3><p>Get the .spec.ts, drop it into your repo, and run <code>npx playwright test</code>.</p></div>
+      <div class="how-step reveal"><h3>Add assertions</h3><p>Check text, visibility, values or CSS, such as <code>toHaveCSS</code>, from the panel or a right-click.</p></div>
+      <div class="how-step reveal"><h3>Re-run it</h3><p>Re-run the steps in a new tab. A failure shows its screenshot, console errors, trace and a ready bug report.</p></div>
+      <div class="how-step reveal"><h3>Generate or copy</h3><p>Connect your repo and generate framework code, or copy the plain Playwright code. Then run <code>npx playwright test</code>.</p></div>
     </div>
   </div>
 </section>
@@ -491,9 +495,13 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
     </div>
     <div class="who">
       <div class="who-card reveal"><div class="e">📏</div><h3>Guideline rules</h3><p>Enforce your rules, like no hard waits and no XPath, and get flagged when generated code breaks one.</p></div>
-      <div class="who-card reveal"><div class="e">🌐</div><h3>Smart network waits</h3><p>Captures key network calls and waits on real responses instead of <code style="font-family:var(--mono);font-size:12.5px">waitForTimeout</code>.</p></div>
-      <div class="who-card reveal"><div class="e">▶️</div><h3>Replay in the extension</h3><p>Replay a recorded flow in the browser to verify it before you export the spec.</p></div>
-      <div class="who-card reveal"><div class="e">👥</div><h3>Shared team profiles</h3><p>Everyone generates against the same framework config, so tests stay consistent across the team.</p></div>
+      <div class="who-card reveal"><div class="e">⏳</div><h3>Smart waits on re-run</h3><p>Re-runs wait for the element a step needs and for loading indicators, never a fixed <code style="font-family:var(--mono);font-size:12.5px">waitForTimeout</code>.</p></div>
+      <div class="who-card reveal"><div class="e">🐞</div><h3>Failures you can act on</h3><p>See where a re-run failed, with a screenshot, console errors, a Playwright trace and a bug report ready to copy.</p></div>
+      <div class="who-card reveal"><div class="e">👥</div><h3>Shared across the team</h3><p>Guidelines live in your repo, and projects export to a file teammates can import, so tests stay consistent.</p></div>
+      <div class="who-card reveal"><div class="e">🗓️</div><h3>Scheduled runs</h3><p>Run chosen sessions once, daily or on set weekdays, and get a notification with the results.</p></div>
+      <div class="who-card reveal"><div class="e">♿</div><h3>Accessibility checks</h3><p>Check a page against WCAG rules with axe-core while recording, and keep the check as a test step.</p></div>
+      <div class="who-card reveal"><div class="e">📱</div><h3>Phones and tablets</h3><p>Record as a device, with its screen size and touch, and re-run the same way.</p></div>
+      <div class="who-card reveal"><div class="e">🗂️</div><h3>Projects</h3><p>Keep apps or teams apart, each with its own sessions, schedules, secrets and repo.</p></div>
     </div>
   </div>
 </section>
@@ -521,13 +529,50 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
       <h2>Questions, answered.</h2>
     </div>
     <div class="faq">
-      <details class="reveal"><summary>Is TestFit free?</summary><p>Yes. TestFit is free to install from the Chrome Web Store, with no sign-up and no credit card.</p></details>
-      <details class="reveal"><summary>Do I need an OpenAI or Gemini API key?</summary><p>No. TestFit creates a prompt that you paste into any public model, like ChatGPT, Gemini or Claude, on their free plans. You can compare outputs from several models and keep the best one.</p></details>
+      <details class="reveal"><summary>Is TestFit free?</summary><p>Yes. TestFit is free to install from the Chrome Web Store, with no sign-up and no credit card. If you generate code with a hosted AI provider, that provider bills your own API key at its usual rates. A local model costs nothing.</p></details>
+      <details class="reveal"><summary>Do I need an AI API key?</summary><p>Only to generate framework code. Recording, assertions, re-runs, schedules and copying the plain Playwright code need no key. To generate code, add a key for Anthropic, OpenAI or Google Gemini, or point TestFit at a local model such as Ollama or LM Studio, which needs no key.</p></details>
       <details class="reveal"><summary>How is this different from Playwright's codegen?</summary><p>Codegen records raw locators on the page. TestFit maps your steps to your existing page objects, fixtures and coding guidelines, so the output matches how your team already writes tests.</p></details>
-      <details class="reveal"><summary>We don't have a framework yet. Can I still use it?</summary><p>Yes. Without a profile, TestFit generates clean Playwright TypeScript with stable locators and assertions, plus page object snippets you can build a framework from.</p></details>
+      <details class="reveal"><summary>We don't have a framework yet. Can I still use it?</summary><p>Yes. Without a repo, TestFit generates standard Playwright Page Object Model code: page objects in <code>pages/</code> and specs in <code>tests/</code>, with stable locators and your assertions. It's a good start for a framework.</p></details>
       <details class="reveal"><summary>I'm not a coder. Will this work for me?</summary><p>Yes. Recording a flow and adding assertions needs no code. You can hand the generated spec to an SDET or developer to add to the repo.</p></details>
-      <details class="reveal"><summary>Is my data safe?</summary><p>Recordings and your framework profile stay in your browser. TestFit doesn't send them to any server. You decide what goes into an AI tool when you paste the prompt. See the <a href="https://sagarbobade.github.io/testfit-privacy/" target="_blank" rel="noopener" style="color:var(--accent)">privacy policy</a>.</p></details>
+      <details class="reveal"><summary>Is my data safe?</summary><p>Recordings, results and your settings stay in your browser. TestFit has no server and no analytics. Only when you generate code or write a bug report with AI does it send a request, straight from your browser to the provider you chose. You can preview that request first, emails and phone numbers are replaced with placeholders, and passwords are never sent. See the <a href="https://sagarbobade.github.io/testfit-privacy/" target="_blank" rel="noopener" style="color:var(--accent)">privacy policy</a>.</p></details>
+      <details class="reveal"><summary>Why does TestFit need the debugger permission?</summary><p>TestFit records and re-runs tests with Playwright, which controls a tab through Chrome's DevTools Protocol. It attaches only to the tab you record or re-run, and Chrome shows its "started debugging this browser" banner while it does.</p></details>
       <details class="reveal"><summary>Which frameworks are supported?</summary><p>TestFit generates Playwright tests in TypeScript.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S NEW -->
+<section class="alt" id="changelog">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">What's new</div>
+      <h2>Latest update.</h2>
+    </div>
+    <div class="faq">
+      <details class="reveal" open><summary>Code examples, data files and standard page objects</summary>
+        <ul class="news">
+          <li><b>Code examples.</b> Pick one file each to show how your team writes fixtures, page objects and test data. Your reference tests are the spec example. Generated code follows them, including your data helpers and import paths.</li>
+          <li><b>Data files can be chosen.</b> "Files to refer to" now finds any source file in your repo, including test data in folders like <code>factories/</code>.</li>
+          <li><b>Standard Page Object Model without a repo.</b> With no repo connected, generated code uses standard page objects instead of a single test file.</li>
+          <li><b>Smaller things.</b> Clearer warnings when a code example is missing or too large to send, generated data that keeps the values your assertions expect, keyboard-scrollable code, and a link to this site from the extension.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">Support</div>
+      <h2>Need help, found a bug, or want a feature?</h2>
+      <p class="lead">Email is the quickest way to reach me. I read every message. For a bug, say what you did, what you expected, and your Chrome version. In the extension, the failed step's Copy bug report button gives you most of that.</p>
+    </div>
+    <div class="ctas reveal" style="justify-content:center">
+      <a class="btn btn-primary" href="mailto:bobadesagarwd@gmail.com?subject=TestFit%20support">Email support</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/sagar-bobade/" target="_blank" rel="noopener">Message on LinkedIn</a>
+      <a class="btn btn-ghost" href="https://chromewebstore.google.com/detail/gnafbfhcgcigcmeflgcgmhmbchomgmgh?utm_source=item-share-cb" target="_blank" rel="noopener">Leave a review</a>
     </div>
   </div>
 </section>
@@ -544,7 +589,7 @@ test.<span class="f">describe</span>(<span class="s">'Cart'</span>, () => {
         </a>
         <p style="max-width:300px">Built with ❤️ for those who value their time.</p>
       </div>
-      <div><h5>Product</h5><ul><li><a href="#features">Features</a></li><li><a href="#how">How it works</a></li><li><a href="#more">More features</a></li><li><a href="https://sagarbobade.github.io/testfit-privacy/" target="_blank" rel="noopener">Privacy policy</a></li></ul></div>
+      <div><h5>Product</h5><ul><li><a href="#features">Features</a></li><li><a href="#how">How it works</a></li><li><a href="#more">More features</a></li><li><a href="#changelog">What's new</a></li><li><a href="#support">Support</a></li><li><a href="https://sagarbobade.github.io/testfit-privacy/" target="_blank" rel="noopener">Privacy policy</a></li></ul></div>
       <div><h5>More QA tools</h5><ul><li><a href="https://chromewebstore.google.com/detail/ifiehfimgfiemenlcfgopapgjpdcpghm?utm_source=item-share-cb" target="_blank" rel="noopener">BugReporter</a></li><li><a href="https://chromewebstore.google.com/detail/cpeocgdgoopflcgmpohkcgnigkfhokdm?utm_source=item-share-cb" target="_blank" rel="noopener">Test Data Generator</a></li></ul></div>
       <div><h5>Connect</h5><ul><li><a href="https://www.linkedin.com/in/sagar-bobade/" target="_blank" rel="noopener">LinkedIn</a></li><li><a href="https://github.com/SagarBobade" target="_blank" rel="noopener">GitHub</a></li></ul></div>
     </div>
